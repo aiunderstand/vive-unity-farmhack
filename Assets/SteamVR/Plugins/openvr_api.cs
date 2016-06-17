@@ -1409,7 +1409,12 @@ public class CVRSystem
 	{
 		FnTable.AcknowledgeQuit_UserPrompt();
 	}
-}
+
+        internal bool GetControllerState(int controllerIndex, ref object controllerState)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
 
 public class CVRExtendedDisplay

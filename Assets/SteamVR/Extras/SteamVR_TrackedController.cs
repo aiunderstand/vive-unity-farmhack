@@ -20,6 +20,7 @@ public class SteamVR_TrackedController : MonoBehaviour
     public bool padPressed = false;
     public bool padTouched = false;
     public bool gripped = false;
+    public bool isTeleporter = false;
 
     public event ClickedEventHandler MenuButtonClicked;
     public event ClickedEventHandler MenuButtonUnclicked;
@@ -33,9 +34,25 @@ public class SteamVR_TrackedController : MonoBehaviour
     public event ClickedEventHandler Gripped;
     public event ClickedEventHandler Ungripped;
 
+
+    public GameObject[] layers;
+    private int index = 0;
+    
     // Use this for initialization
     void Start()
     {
+        //hide all layers
+        if (layers.Length > 0)
+        {
+            for (int i = 0; i < layers.Length; i++)
+            {
+                if (i == 0)
+                    layers[i].SetActive(true);
+                else
+                    layers[i].SetActive(false);
+            }
+        }
+
         if (this.GetComponent<SteamVR_TrackedObject>() == null)
         {
             gameObject.AddComponent<SteamVR_TrackedObject>();
@@ -142,6 +159,17 @@ public class SteamVR_TrackedController : MonoBehaviour
                 e.padX = controllerState.rAxis0.x;
                 e.padY = controllerState.rAxis0.y;
                 OnTriggerClicked(e);
+
+                if (!isTeleporter)
+                {
+                    layers[index].SetActive(false);
+                    index++;
+
+                    if (index > 2)
+                        index = 0;
+
+                    layers[index].SetActive(true);
+                }
 
             }
             else if (trigger == 0L && triggerPressed)
